@@ -1,0 +1,79 @@
+<!--The content below is only a placeholder and can be replaced.-->
+<div style="display: flex; justify-content: center;">
+  <h3>{{title}}</h3>
+  <img
+    width="40"
+    alt="Angular Logo"
+    src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg=="
+  />
+</div>
+
+<br />
+<br />
+
+<div style="display: flex; justify-content: center;">
+  <form [formGroup]="myForm" (ngSubmit)="submitHandler">
+    <h2>Author Form</h2>
+    <div class="form-group">
+      <label>Author</label>
+      <input type="text" class="form-control" formControlName="author" />
+      <span
+        *ngIf="myForm.controls['author'].errors?.required && myForm.controls['author'].touched"
+        style="color: red;"
+        >Required
+      </span>
+      <span
+        *ngIf="myForm.controls['author'].errors?.maxlength"
+        style="color: red;"
+        >Should be at most 40 charactes
+      </span>
+    </div>
+
+    <h3>Books</h3>
+
+    <div class="form-group">
+      <div formArrayName="books">
+        <div [formGroupName]="i" *ngFor="let book of books.controls; index as i">
+          <div class="row">
+            <div class="col-6">
+              <label>Name</label>
+              <input type="text" class="form-control" formControlName="name" placeholder="book name"/>
+              <span *ngIf="book.get('name').errors?.required && book.get('name').touched" style="color: red;" >
+                Required
+              </span>
+              <span *ngIf="book.get('name').errors?.maxlength && book.get('name').touched" style="color: red;">
+                Should be at most 40 characters
+              </span>
+            </div>
+            <div class="col-3">
+              <label>Rate</label>
+              <input type="number" class="form-control" formControlName="stars" />
+              <span style="color: red;" *ngIf="book.get('stars').errors?.required && book.get('stars').touched" >
+                Required
+              </span>
+              <span style="color: red;" *ngIf="book.get('stars').errors?.range && book.get('stars').touched">
+                rate should be between 1 and 5 start
+              </span>
+            </div>
+            <div class="col-1">
+              <button (click)="removeBook(i)" class="btn btn-danger">X</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <button (click)="addNewBook()" class="btn btn-primary" style="float: left;">
+      Add Book
+    </button>
+    <div style="clear: both;"></div>
+    <br />
+    <button
+      type="submit"
+      class="btn btn-success"
+      style="width: 100%;"
+      [disabled]="!myForm.valid"
+    >
+      Submit
+    </button>
+  </form>
+</div>
